@@ -3,8 +3,6 @@ Kohana QRcode generator
 
 QRcode provides to Kohana an easy way to generate ISO/IEC 18004:2006 quick response codes compatible with almost mobile 2-D QRcode readers.
 
-------------------------
-
 
 Usage
 -----
