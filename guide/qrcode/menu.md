@@ -1,0 +1,6 @@
+## [QRcode]()
+- [Getting started](started)
+- [Basic usage](using)
+- [Examples](examples)
+    - [Simple](examples/simple)
+    - [Validation](examples/validation)
