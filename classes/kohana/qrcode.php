@@ -12,9 +12,9 @@
 
 
 class QRConst {
-  
+	
   // Defaults
-  const QRSPEC_VERSION_MAX      = 40;
+  const QRSPEC_VERSION_MAX     	= 40;
   const QRSPEC_WIDTH_MAX        = 177;
   const QRCAP_WIDTH             = 0;
   const QRCAP_WORDS             = 1;
