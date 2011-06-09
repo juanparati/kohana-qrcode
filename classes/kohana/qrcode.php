@@ -23,8 +23,7 @@ class QRConst {
   const QR_IMAGE                = TRUE;
   const STRUCTURE_HEADER_BITS   = 20;
   const MAX_STRUCTURED_SYMBOLS  = 16;
-  
-  
+    
   // Encoding modes 
   const QR_MODE_NUL             = -1;
   const QR_MODE_NUM             = 0;
