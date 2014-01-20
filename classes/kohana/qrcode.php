@@ -47,21 +47,24 @@ class QRConst {
 }
 
 
-abstract class Kohana_QRcode {
+abstract class Kohana_QRCode {
   
    
 	protected static $instance;
 	protected $config;
 	public $version;
   public $width;
-  public $data; 
- 
-	public static function instance()
+  public $data;
+
+    /**
+     * @return QRCode
+     */
+    public static function instance()
 	{
 		if ( ! isset(QRcode::$instance))
 		{
 			// Load the configuration for this type
-			$config = Kohana::config('qrcode');					
+			$config = Kohana::$config->load('qrcode');
 			
 			// Create a new session instance
 			QRcode::$instance = new QRcode($config);
@@ -150,10 +153,10 @@ abstract class Kohana_QRcode {
       if($mask < 0) 
       {
             
-        if (Kohana::config('qrcode')->best_mask) 
+        if (Kohana::$config->load('qrcode')->best_mask)
           $masked = $maskObj->mask($width, $frame, $input->getErrorCorrectionLevel());
         else 
-          $masked = $maskObj->makeMask($width, $frame, (intval(Kohana::config('qrcode')->default_mask) % 8), $input->getErrorCorrectionLevel());
+          $masked = $maskObj->makeMask($width, $frame, (intval(Kohana::$config->load('qrcode')->default_mask) % 8), $input->getErrorCorrectionLevel());
         
       } else 
         $masked = $maskObj->makeMask($width, $frame, $mask, $input->getErrorCorrectionLevel());
@@ -922,7 +925,7 @@ class QRspec {
   
     if(!isset(self::$frames[$version])) {                              
         
-      if (Kohana::config('qrcode')->cacheable) {
+      if (Kohana::$config->load('qrcode')->cacheable) {
             
         self::$frames[$version] = Kohana::cache('frame_'.$version.'.dat');
                   
@@ -1013,8 +1016,12 @@ class QRimage {
   //----------------------------------------------------------------------
   private static function image($frame, $pixelPerPoint = 4, $outerFrame = 4) 
   {
+      $min = strlen($frame[0]);
+      foreach ($frame as $str) {
+          $min = $min > strlen($str) ? strlen($str) : $min;
+      }
       $h = count($frame);
-      $w = strlen($frame[0]);
+      $w = $min;
       
       $imgW = $w + 2 * $outerFrame;
       $imgH = $h + 2 * $outerFrame;
@@ -2614,7 +2621,7 @@ class QRmask {
       
       $fileName = 'mask_'.$maskNo.DIRECTORY_SEPARATOR.'mask_'.$width.'_'.$maskNo.'.dat';
   
-      if (Kohana::config('qrcode')->cacheable) {
+      if (Kohana::$config->load('qrcode')->cacheable) {
           
           $bitMask = Kohana::cache($fileName);
           
@@ -2763,7 +2770,7 @@ class QRmask {
       
       $checked_masks = array(0,1,2,3,4,5,6,7);
       
-      $rand_seed = Kohana::config('qrcode')->rand_seed;
+      $rand_seed = Kohana::$config->load('qrcode')->rand_seed;
       
       if ($rand_seed !== false) {
       
@@ -3143,7 +3150,7 @@ class QRencode {
       if ($err != '')
         throw new Kohana_Exception($err);              
       
-      $maxSize = (int)(Kohana::config('qrcode')->png_max_size / (count($tab) + 2 * $this->margin));
+      $maxSize = (int)(Kohana::$config->load('qrcode')->png_max_size / (count($tab) + 2 * $this->margin));
       
       QRimage::png($tab, $outfile, min(max(1, $this->size), $maxSize), $this->margin,$saveandprint);
 
